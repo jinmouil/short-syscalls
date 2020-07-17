@@ -25,6 +25,7 @@ int main() {
         return 1;
     }
 
+    buf[5] = '\0';
     printf("Read: %s\n", buf);
 
     return 0;
