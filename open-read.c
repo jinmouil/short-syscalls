@@ -29,6 +29,9 @@ int main(int argc, char *argv[]) {
         printf("Error: %s (errno=%d)\n", strerror(errno), errno);
         return 1;
     }
+    if(ret != 5) {
+        printf("Error: read failed to read 5 bytes but %d\n", ret);
+    }
 
     buf[5] = '\0';
     printf("Read: %s\n", buf);
