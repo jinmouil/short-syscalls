@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
     long int bytesToRead = strtol(argv[2], NULL, 10);
     if(bytesToRead < 0 || bytesToRead > INT_MAX) {
-        printf("Error: invalid bytes to read %d\n", bytesToRead);
+        printf("Error: invalid bytes to read %ld\n", bytesToRead);
         return 1;
     }
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if(ret != bytesToRead) {
-        printf("Warn: read wanted to read %d bytes but got %d\n", bytesToRead, ret);
+        printf("Warn: read wanted to read %ld bytes but got %d\n", bytesToRead, ret);
     }
 
     buf[bytesToRead] = '\0';
