@@ -7,11 +7,14 @@
 #include <errno.h>
 #include <string.h>
 
+#include <stdlib.h>
+#include <limits.h>
+
 extern int errno;
 
 int main(int argc, char *argv[]) {
-    if(argc < 2) {
-        printf("Error: need path to be the first argument\n");
+    if(argc < 3) {
+        printf("Error: need path to be the first argument and number of bytes to read as the second\n");
         return 1;
     }
 
@@ -22,19 +25,27 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    char buf[10];
+    long int bytesToRead = strtol(argv[2], NULL, 10);
+    if(bytesToRead < 0 || bytesToRead > INT_MAX) {
+        printf("Error: invalid bytes to read %d\n", bytesToRead);
+        return 1;
+    }
+
+    char * buf = malloc(bytesToRead+1);
     int ret;
-    if((ret = read(fd, buf, 5)) < 0) {
+    if((ret = read(fd, buf, bytesToRead)) < 0) {
         printf("Error: read failed %d\n", ret);
         printf("Error: %s (errno=%d)\n", strerror(errno), errno);
         return 1;
     }
-    if(ret != 5) {
-        printf("Error: read failed to read 5 bytes but %d\n", ret);
+    if(ret != bytesToRead) {
+        printf("Warn: read wanted to read %d bytes but got %d\n", bytesToRead, ret);
     }
 
-    buf[5] = '\0';
+    buf[bytesToRead] = '\0';
     printf("Read: %s\n", buf);
+
+    free(buf);
 
     return 0;
 }
